@@ -1,0 +1,7 @@
+"cnr" is the file name
+"kval" is one estimate of quality... about 1.5+ can be taken as threshold. Another method is to choose "popul" column binary values.
+"varb" is a estimate of strength of bar, which is nuisance for modelling and can be used as extra parameter for machine learning. 
+"dust" is indicator whether there is dust lane to be seen in image. 
+
+
+In images, values are counts per second. It is common to look (and perhaps to model) images after you take log from each value (or add arbitary constant and take log). 
