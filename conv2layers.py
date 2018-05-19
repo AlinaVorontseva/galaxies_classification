@@ -1,9 +1,13 @@
-import astropy.io.fits as pyfits
+import matplotlib
+matplotlib.use('Agg')
 
+#import astropy.io.fits as pyfits
+
+import argparse
 import os
 import pickle
 import numpy as np
-from skimage.transform import resize
+#from skimage.transform import resize
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
@@ -43,7 +47,7 @@ def Make_history_plots(history,name):
     plt.xlabel('epoch')
     plt.legend(['Training', 'Validation'])
     
-    plt.savefig('history/history_'+name, format='png')
+    plt.savefig('history/history_'+name+'.png', format='png')
     
 parser = argparse.ArgumentParser()
 parser.add_argument('--name',type=str,default='model')
@@ -102,3 +106,5 @@ history = model.fit(X_train, y_train,
 
 Make_history_plots(history,args.name)
 model.save('saved_models/model_' + args.name + '.h5')
+model.evaluate(X_train, y_train)
+model.evaluate(X_test,y_test)
