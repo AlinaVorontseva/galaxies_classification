@@ -113,5 +113,5 @@ history = model.fit(X_train, y_train,
 
 Make_history_plots(history,args.name)
 model.save('saved_models/model_' + args.name + '.h5')
-model.evaluate(X_train, y_train)
-model.evaluate(X_test,y_test)
+print(model.evaluate(X_train, y_train))
+print(model.evaluate(X_test,y_test))
