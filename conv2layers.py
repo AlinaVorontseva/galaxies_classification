@@ -51,6 +51,17 @@ def Make_history_plots(history,name):
     
 parser = argparse.ArgumentParser()
 parser.add_argument('--name',type=str,default='model')
+parser.add_argument('--conv1filters',type=int,default=96)
+parser.add_argument('--conv1size',type=int,default=8)
+parser.add_argument('--conv2filters',type=int,default=0)
+parser.add_argument('--conv2size',type=int,default=0)
+parser.add_argument('--act1',type=str,default="relu")
+parser.add_argument('--act2',type=str,default="relu")
+parser.add_argument('--act3',type=str,default="relu")
+parser.add_argument('--poolsize',type=int,default=3)
+parser.add_argument('--dl',type=int,default=24)
+parser.add_argument('--epochs',type=int,default=10)
+parser.add_argument('--batch',type=int,default=32)
 args = parser.parse_args()
 
 label_file = "R_filtrid/BD_decomp_asi.txt"
@@ -75,22 +86,17 @@ galaxies_array = np.array(galaxies)
 X_train, X_test, y_train, y_test = train_test_split(galaxies_array, labels, test_size=0.2, random_state=2)
 
 im_size = 100
-batch_size = 32
+batch_size = args.batch
 
 x = Input(shape=(im_size, im_size, 1))
-h = Conv2D(96, (8, 8))(x)
-#h = BatchNormalization()(h)
-h = Activation('relu')(h)
-h = Conv2D(96, (8, 8))(h)
-#h = BatchNormalization()(h)
-h = Activation('relu')(h)
-h = MaxPooling2D(pool_size = (3, 3))(h)
-#h = Dropout(rate=0.25)(h)
+h = Conv2D(args.conv1filters, (args.conv1size, args.conv1size))(x)
+h = Activation(args.act1)(h)
+h = Conv2D(args.conv2filters, (args.conv2size, args.conv2size))(x)
+h = Activation(args.act2)(h)
+h = MaxPooling2D(pool_size = (args.poolsize, args.poolsize))(h)
 h = Flatten()(h)
-h = Dense(24)(h)
-#h = BatchNormalization()(h)
-h = Activation('relu')(h)
-#h = Dropout(rate=0.5)(h)
+h = Dense(args.dl)(h)
+h = Activation(args.act3)(h)
 p = Dense(1)(h)
 
 model = Model(inputs=x, outputs=p)
