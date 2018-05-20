@@ -91,8 +91,9 @@ batch_size = args.batch
 x = Input(shape=(im_size, im_size, 1))
 h = Conv2D(args.conv1filters, (args.conv1size, args.conv1size))(x)
 h = Activation(args.act1)(h)
-h = Conv2D(args.conv2filters, (args.conv2size, args.conv2size))(x)
-h = Activation(args.act2)(h)
+if args.conv2filters!=0 and args.conv2size!=0:
+    h = Conv2D(args.conv2filters, (args.conv2size, args.conv2size))(x)
+    h = Activation(args.act2)(h)
 h = MaxPooling2D(pool_size = (args.poolsize, args.poolsize))(h)
 h = Flatten()(h)
 h = Dense(args.dl)(h)
